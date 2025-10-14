@@ -72,7 +72,7 @@ public class UserController {
     }
 // here is to retrieve all with the same age
     @GetMapping("/age/{age}")
-    public ResponseEntity<List<User>> findByAge(Integer age){
+    public ResponseEntity<List<User>> findByAge(@PathVariable Integer age){
         List<User> findByAge = userService.getUserByAge(age);
         return ResponseEntity.ok(findByAge);
     }
