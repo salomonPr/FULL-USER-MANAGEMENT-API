@@ -1,23 +1,26 @@
 
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/usermanagement?useSSL=false&serverTimezone=UTC
-    username: root
-    password: 0786261@Kin!
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${DATABASE_URL:jdbc:mysql://localhost:3306/usermanagement}
+    username: ${DATABASE-USERNAME = root }
+    password: ${DATABASE-PASSWORD = password }
+  
 
 
   jpa:
     hibernate:
-      ddl-auto: update
-    show-sql: true
+      ddl-auto: validate
+    show-sql: false
     properties:
       hibernate:
         format_sql: true
     open-in-view: false
 
 server:
-  port: 1000
+  port: ${PORT:9000}
+  error:
+    include-message: always
+    include-binding-errors: always
 
 
 logging:
