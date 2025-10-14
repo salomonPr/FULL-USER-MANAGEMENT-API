@@ -28,6 +28,7 @@ Production-ready REST API for user management with full CRUD operations.
 - 6 Comprehensive error handling
 - 7 Logging
 - 8 MySQL database
+- 9 Login wiht password
 
  Endpoints
 ==========
@@ -63,7 +64,7 @@ DELETE /api/users/delete/{id}
 3. Run: `mvn spring-boot:run`
 4. API available at: http://localhost:9000
 
-## Testing
+ Testing
 ===========
 all end point are tested in postman and it is working collectly,
 Import the Postman collection and test all endpoints.
