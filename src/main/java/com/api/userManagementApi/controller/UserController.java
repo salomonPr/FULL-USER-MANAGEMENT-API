@@ -1,5 +1,7 @@
 package com.api.userManagementApi.controller;
 
+import com.api.userManagementApi.dto.LoginRequestDTO;
+import com.api.userManagementApi.dto.LoginResponseDTO;
 import com.api.userManagementApi.dto.UserRequestDTO;
 import com.api.userManagementApi.dto.UserResponseDTO;
 import com.api.userManagementApi.entity.User;
@@ -34,6 +36,13 @@ public class UserController {
 
          return ResponseEntity.ok(user);
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponseDTO> login(@Valid @RequestBody LoginRequestDTO loginRequest){
+        LoginResponseDTO login = userService.login(loginRequest);
+        return ResponseEntity.ok(login);
+    }
+
 // here is to register new users
     @PostMapping("/registerUsers")
     public ResponseEntity<UserResponseDTO> registerUser (@Valid @RequestBody UserRequestDTO user){

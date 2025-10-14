@@ -1,23 +1,27 @@
 package com.api.userManagementApi.service;
 
+import com.api.userManagementApi.dto.LoginRequestDTO;
+import com.api.userManagementApi.dto.LoginResponseDTO;
 import com.api.userManagementApi.dto.UserRequestDTO;
 import com.api.userManagementApi.dto.UserResponseDTO;
 import com.api.userManagementApi.entity.User;
 import com.api.userManagementApi.exception.DuplicationUserException;
+import com.api.userManagementApi.exception.LoginValidationException;
 import com.api.userManagementApi.exception.UserNotFoundException;
 import com.api.userManagementApi.repository.UserRepository;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class UserService {
 
     @Autowired
@@ -27,11 +31,13 @@ public class UserService {
     private UserRepository userRepository;
 
     public UserResponseDTO registerNewUser(UserRequestDTO userRequestDTO){
+        log.info("creating new user with username{} ",userRequestDTO.getUsername());
         if (userRepository.existsByUsername(userRequestDTO.getUsername())){
             throw new RuntimeException("user already exist with username: "+userRequestDTO.getUsername());
         }
 
         if (userRepository.existsByEmail(userRequestDTO.getEmail())){
+            log.warn("Attempt to create user with already username exist{} ",userRequestDTO.getUsername());
             throw new RuntimeException("email already exist: "+userRequestDTO.getEmail());
         }
 
@@ -39,12 +45,13 @@ public class UserService {
 
         user.setPassword(passwordEncoder.encode(userRequestDTO.getPassword()));
         User savedUser = userRepository.save(user);
-
+        log.info("user create successful with id{} ",savedUser.getId());
 
         return mapToUserResponse(savedUser);
     }
 
     public UserResponseDTO getUserById(Long id){
+        log.info("fetch user by user id {} ",id);
         User users = userRepository.findById(id)
                 .orElseThrow(()->new RuntimeException("user with: "+id+" not found! "));
         
@@ -133,7 +140,10 @@ public class UserService {
                 user.getPhoneNumber(),
                 user.getEmail(),
                 user.getAddress(),
-                user.getAge());
+                user.getAge(),
+                user.getCreatedAt(),
+                user.getUpdateAt());
+
 
     }
 
@@ -233,7 +243,19 @@ public class UserService {
         if (userRepository.existsById(id)){
             throw new RuntimeException("fail to delete ");
         }
+    }
 
+    public LoginResponseDTO login(LoginRequestDTO loginRequest){
+
+        User user = userRepository.findByUsername(loginRequest.getUsername()).orElseThrow(()-> new LoginValidationException("Invalid username or password"));
+
+        boolean passwordMatches = passwordEncoder.matches(loginRequest.getPassword(),user.getPassword());
+        if (!passwordMatches){
+            throw new LoginValidationException("Invalid username or password ");
+        }
+
+        UserResponseDTO userResponseDTO = mapToUserResponse(user);
+        return new LoginResponseDTO(true,"Login successful", userResponseDTO);
 
     }
 

@@ -71,5 +71,14 @@ public class GlobalExceptionHandle {
 
     }
 
+    @ExceptionHandler(LoginValidationException.class)
+    public ResponseEntity<Map<String, Object>> handleLoginValidation(LoginValidationException ex){
+        Map<String, Object> response = new HashMap<>();
+        response.put("time: ", LocalDateTime.now());
+        response.put("status: ", HttpStatus.UNAUTHORIZED.value());
+        response.put("error: ", "Authorization fail");
+
+        return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+    }
 
 }

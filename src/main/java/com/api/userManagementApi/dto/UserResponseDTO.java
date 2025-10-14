@@ -1,8 +1,11 @@
 package com.api.userManagementApi.dto;
 
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -18,6 +21,7 @@ public class UserResponseDTO {
         private String email;
         private String address;
         private Integer age;
-
+        private LocalDateTime createdAt;
+        private LocalDateTime updateAt;
 
 }
