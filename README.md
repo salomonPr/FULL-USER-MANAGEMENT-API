@@ -1,6 +1,9 @@
  User Management API
  ===================
 
+ Production-Level REST API for user management with full CRUD operations.
+------------------------------------------------------------------------
+
   Final Checklist
   ===============
 
@@ -15,9 +18,6 @@
 ✅ Logging works properly
 ✅ Database connection is secure
 ✅ Login with password
-
-Production-ready REST API for user management with full CRUD operations.
-------------------------------------------------------------------------
 
  Features
  ---------
