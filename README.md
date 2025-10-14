@@ -14,6 +14,7 @@
 ✅ Timestamps are recorded
 ✅ Logging works properly
 ✅ Database connection is secure
+✅ Login with password
 
 Production-ready REST API for user management with full CRUD operations.
 ------------------------------------------------------------------------
@@ -31,10 +32,11 @@ Production-ready REST API for user management with full CRUD operations.
  Endpoints
 ==========
 
- Create User
- -----------
- 
-POST /api/users
+### POST create user 
+post /api/users/registerUsers 
+
+### Login 
+post /api/users/login
 
 ### Get All Users
 GET /api/users/users
