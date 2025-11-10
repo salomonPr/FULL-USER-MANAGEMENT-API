@@ -1,15 +1,9 @@
-
 spring:
   datasource:
-    url: ${DATABASE_URL:jdbc:mysql://localhost:3306/usermanagement}
-    username: ${DATABASE-USERNAME = root }
-    password: ${DATABASE-PASSWORD = password }
-  
 
 
   jpa:
     hibernate:
-      ddl-auto: validate
     show-sql: false
     properties:
       hibernate:
@@ -17,10 +11,6 @@ spring:
     open-in-view: false
 
 server:
-  port: ${PORT:9000}
-  error:
-    include-message: always
-    include-binding-errors: always
 
 
 logging:
@@ -29,5 +19,3 @@ logging:
 
   security:
     user:
-      name: admin
-      password: admin
