@@ -1,0 +1,35 @@
+[33mcommit 07ae06fdf65483588e43ebcd082ea2047353fe92[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m
+Author:     salomonPr <nkurunzizasalomonbirori@gmail.com>
+AuthorDate: Tue Nov 11 00:20:05 2025 +0200
+Commit:     salomonPr <nkurunzizasalomonbirori@gmail.com>
+CommitDate: Tue Nov 11 00:34:45 2025 +0200
+
+    add spring security for authorization and authentication
+    
+    # Conflicts:
+    #       .gitignore
+    #       pom.xml
+    #       src/main/resources/application.yml
+
+M	.gitignore
+M	pom.xml
+A	src/main/java/com/api/user/UserManagenentApiApplication.java
+A	src/main/java/com/api/user/controller/UserController.java
+A	src/main/java/com/api/user/dto/LoginRequestDTO.java
+A	src/main/java/com/api/user/dto/LoginResponseDTO.java
+A	src/main/java/com/api/user/dto/UserRequestDTO.java
+A	src/main/java/com/api/user/dto/UserResponseDTO.java
+A	src/main/java/com/api/user/entity/Role.java
+A	src/main/java/com/api/user/entity/User.java
+A	src/main/java/com/api/user/exception/DuplicationUserException.java
+A	src/main/java/com/api/user/exception/InvalidUserDataException.java
+A	src/main/java/com/api/user/exception/LoginValidationException.java
+A	src/main/java/com/api/user/exception/UserNotFoundException.java
+A	src/main/java/com/api/user/repository/UserRepository.java
+A	src/main/java/com/api/user/security/CustomUserDetailService.java
+A	src/main/java/com/api/user/security/JwtAuthenticationFilter.java
+A	src/main/java/com/api/user/security/JwtUtils.java
+A	src/main/java/com/api/user/security/SecurityConfig.java
+A	src/main/java/com/api/user/service/UserService.java
+M	src/main/resources/application.yml
+A	src/test/java/com/api/user/UserManagenentApiApplicationTests.java
