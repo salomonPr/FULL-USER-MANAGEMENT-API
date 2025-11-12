@@ -1,18 +1,29 @@
 spring:
   datasource:
-
+              url: jdbc:mysql://localhost:3306/usermanagement?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+              username: root
+              password: 0786261@Kin!
+              driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     hibernate:
-    show-sql: false
+      ddl-auto: update
+    show-sql: true
     properties:
       hibernate:
         format_sql: true
     open-in-view: false
 
+    info:
+      app:
+      name: User Management API
+      description: REST API for managing users with role-based security
+      version: 1.0.0
+      developer: Dev-Salomon
+
+
 server:
-
-
+  port: 8080
 logging:
   level:
     com.api.user: DEBUG
