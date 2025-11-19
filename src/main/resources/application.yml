@@ -7,7 +7,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     show-sql: true
     properties:
       hibernate:
@@ -20,6 +20,11 @@ spring:
       description: REST API for managing users with role-based security
       version: 1.0.0
       developer: Dev-Salomon
+
+jwt:
+  secret: ${JWT_SECRET:mySecretKey12345678901234567890123456789012345678901234567890}
+  expiration: 86400000  # 24 hours in milliseconds
+  refresh-expiration: 604800000
 
 
 server:
