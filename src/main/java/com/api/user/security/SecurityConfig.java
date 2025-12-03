@@ -13,6 +13,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -20,6 +21,9 @@ public class SecurityConfig {
 
     @Autowired
     private CustomUserDetailService userDetailsService;
+
+    @Autowired
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
 
 
     @Bean
@@ -51,22 +55,23 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/users/register").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/users/login").permitAll()
 
-                        // private endpoints this is for user only
-                        .requestMatchers(HttpMethod.PATCH,"/api/users/patchUpdates/**").hasAnyRole("ADMIN","USER")
-                        .requestMatchers(HttpMethod.PUT,"/api/users/getUpdates/**").hasAnyRole("ADMIN","USER")
-                        .requestMatchers(HttpMethod.DELETE,"/api/users/deleteUpdates/**").hasAnyRole("ADMIN","USER")
+                        // user/admin endpoints matching actual controller mappings
+                        .requestMatchers(HttpMethod.GET, "/api/users/users").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/users/*").hasAnyRole("ADMIN","USER")
+                        .requestMatchers(HttpMethod.GET, "/api/users/username/**").hasAnyRole("ADMIN","USER")
+                        .requestMatchers(HttpMethod.GET, "/api/users/address/**").hasAnyRole("ADMIN","USER")
+                        .requestMatchers(HttpMethod.GET, "/api/users/age/**").hasAnyRole("ADMIN","USER")
+                        .requestMatchers(HttpMethod.GET, "/api/users/email/**").hasAnyRole("ADMIN","USER")
+                        .requestMatchers(HttpMethod.GET, "/api/users/phoneNumber/**").hasAnyRole("ADMIN","USER")
 
-                        // private endpoints this is for admin only
-                        .requestMatchers(HttpMethod.GET,"/api/users/getAllUsers").hasAnyRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET,"/api/users/getUserById/**").hasAnyRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET,"/api/users/age/**").hasAnyRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET,"/api/users/username/**").hasAnyRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET,"/api/users/address/**").hasAnyRole("ADMIN")
-                        .requestMatchers(HttpMethod.PUT,"/api/users/updateUserById/**").hasAnyRole("ADMIN")
-                        .requestMatchers(HttpMethod.PATCH,"/api/users/patchUserById/**").hasAnyRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE,"/api/users/deleteUserById/**").hasAnyRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/users/updateUsers/**").hasAnyRole("ADMIN","USER")
+                        .requestMatchers(HttpMethod.PATCH, "/api/users/patchUpdates/**").hasAnyRole("ADMIN","USER")
+                        .requestMatchers(HttpMethod.DELETE, "/api/users/delete/**").hasAnyRole("ADMIN","USER")
                         .anyRequest().authenticated()
                 );
+
+        // register JWT filter before UsernamePasswordAuthenticationFilter
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
 
     }

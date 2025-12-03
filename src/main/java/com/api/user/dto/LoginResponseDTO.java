@@ -15,16 +15,17 @@ public class LoginResponseDTO {
 
 
         private boolean success;
-//        private String token;
+        private String token;
         private UserResponseDTO user;
         private String message;
         private LocalDateTime time;
 
-        // constructor for successful login
-    public LoginResponseDTO(boolean success, String message, UserResponseDTO user){
+    // constructor for successful login with token
+    public LoginResponseDTO(boolean success, String message, UserResponseDTO user, String token){
         this.success = success;
         this.message = message;
         this.user = user;
+        this.token = token;
         this.time = LocalDateTime.now();
     }
 

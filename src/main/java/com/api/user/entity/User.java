@@ -34,7 +34,7 @@ public class User {
 
     @Column(nullable = false, length = 100)
     @NotBlank(message = "Full name is required")
-    @Size(max = 100, message = "Full name cannot exceed 100 characters")
+    @Size(min = 4,max = 100, message = "Full name cannot exceed 100 characters")
     private String fullName;
 
     @Column(unique = true, nullable = false, length = 15)

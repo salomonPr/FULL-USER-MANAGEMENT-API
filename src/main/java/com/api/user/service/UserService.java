@@ -11,6 +11,7 @@ import com.api.user.exception.LoginValidationException;
 import com.api.user.exception.UserNotFoundException;
 import com.api.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
+import com.api.user.security.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,8 +32,8 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-//    @Autowired
-//    private JwtUtils jwtUtils;
+    @Autowired
+    private JwtUtils jwtUtils;
 
     public LoginResponseDTO login(LoginRequestDTO loginRequest){
         User user = userRepository.findByUsername(loginRequest.getUsername()).orElseThrow(()-> new LoginValidationException("Invalid username or password"));
@@ -43,23 +44,23 @@ public class UserService {
             throw new LoginValidationException("Invalid username or password");
         }
 
-//        String token = jwtUtils.generateToken(user.getUsername(), user.getRole());
+        String token = jwtUtils.generateToken(user.getUsername(), user.getRole());
 
         UserResponseDTO userResponse = mapToUserResponse(user);
-        return new LoginResponseDTO(true, "login successful",userResponse);
+        return new LoginResponseDTO(true, "login successful", userResponse, token);
     }
 
     public UserResponseDTO registerNewUser(UserRequestDTO userRequestDTO){
         if (userRepository.existsByUsername(userRequestDTO.getUsername())){
-            throw new RuntimeException("user already exist with username: "+userRequestDTO.getUsername());
+            throw new DuplicationUserException("User already exists with username: "+userRequestDTO.getUsername());
         }
 
         if (userRepository.existsByEmail(userRequestDTO.getEmail())){
-            throw new RuntimeException("email already exist: "+userRequestDTO.getEmail());
+            throw new DuplicationUserException("Email already exists: "+userRequestDTO.getEmail());
         }
 
         if (userRepository.existsByPhoneNumber(userRequestDTO.getPhoneNumber())){
-            throw new RuntimeException("phone number already exist");
+            throw new DuplicationUserException("Phone number already exists: "+userRequestDTO.getPhoneNumber());
         }
 
 
@@ -74,7 +75,7 @@ public class UserService {
 
     public UserResponseDTO getUserById(Long id){
         User users = userRepository.findById(id)
-                .orElseThrow(()->new RuntimeException("user with: "+id+" not found! "));
+                .orElseThrow(() -> new UserNotFoundException("User with id "+ id +" not found"));
 
 
         return mapToUserResponse(users);
